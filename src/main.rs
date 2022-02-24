@@ -5,6 +5,9 @@ use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
 
+const DEFAULT_IP: &str = "127.0.0.1";
+const DEFAULT_PORT: &str = "7878";
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() <= 1 {
@@ -17,9 +20,7 @@ fn main() {
     let json_content = fs::read_to_string(json_filename).unwrap();
 
 
-    let ip = "127.0.0.1";
-    let port = "7878";
-    let listener = TcpListener::bind(format!("{}:{}", ip, port)).unwrap();
+    let listener = TcpListener::bind(format!("{}:{}", DEFAULT_IP, DEFAULT_PORT)).unwrap();
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
