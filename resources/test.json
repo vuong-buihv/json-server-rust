@@ -1,0 +1,9 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "content": "Lorem ipsum",
+      "author": "John Doe"
+    }
+  ]
+}
