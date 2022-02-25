@@ -6,7 +6,7 @@ use std::net::TcpListener;
 use std::net::TcpStream;
 
 const DEFAULT_IP: &str = "127.0.0.1";
-const DEFAULT_PORT: &str = "7878";
+const DEFAULT_PORT: &str = "8080";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -19,13 +19,11 @@ fn main() {
     let json_filename = &args[1];
     let json_content = fs::read_to_string(json_filename).unwrap();
 
-
     let listener = TcpListener::bind(format!("{}:{}", DEFAULT_IP, DEFAULT_PORT)).unwrap();
+    println!("\tServer started at http://{}:{}", DEFAULT_IP, DEFAULT_PORT);
 
     for stream in listener.incoming() {
-        let stream = stream.unwrap();
-
-        handle_connection(stream, &json_content);
+        handle_connection(stream.unwrap(), &json_content);
     }
 }
 
