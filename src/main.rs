@@ -55,7 +55,7 @@ fn handle_connection(mut stream: TcpStream, json_content: &String) {
     }
 }
 
-// TODO: very veru naive implementation, improve or use dependency
+// TODO: very very naive implementation, improve or use dependency
 fn get_request_body(request: &str) -> String {
     let split_request: Vec<&str> = request.split("{").collect();
 
