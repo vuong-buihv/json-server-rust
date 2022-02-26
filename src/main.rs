@@ -8,7 +8,7 @@ const DEFAULT_IP: &str = "127.0.0.1";
 const DEFAULT_PORT: &str = "8080";
 
 #[derive(Parser)]
-#[clap(author, version)]
+#[clap(version)]
 struct Args {
     /// JSON file to load
     json_filename: String,
