@@ -14,6 +14,6 @@ impl RequestMethods {
             return RequestMethods::POST;
         }
 
-        return RequestMethods::UNKNOWN;
+        RequestMethods::UNKNOWN
     }
 }

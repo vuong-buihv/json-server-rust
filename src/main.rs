@@ -10,16 +10,17 @@ use std::str::from_utf8;
 use request_methods::RequestMethods;
 use args::Args;
 
-const IP_ADDRESS: &str = "127.0.0.1";
+const DEFAULT_HOST: &str = "127.0.0.1";
 const DEFAULT_PORT: &str = "8080";
 
 fn main() {
     let args = Args::parse();
 
+    let host = args.host.unwrap_or(DEFAULT_HOST.to_string());
     let port = args.port.unwrap_or(DEFAULT_PORT.to_string());
 
-    let listener = TcpListener::bind(format!("{}:{}", IP_ADDRESS, port)).unwrap();
-    println!("\tServer started at http://{}:{}", IP_ADDRESS, port);
+    let listener = TcpListener::bind(format!("{}:{}", DEFAULT_HOST, port)).unwrap();
+    println!("\tServer started at http://{}:{}", host, port);
 
     let json_content = fs::read_to_string(args.json_filename).unwrap();
     for stream in listener.incoming() {
@@ -49,7 +50,7 @@ fn handle_connection(mut stream: TcpStream, json_content: &String) {
         },
 
         _ => {
-            let response = "HTTP/1.1 405\r\nContent-Length: \r\n\r\n";
+            let response = "HTTP/1.1 405\r\nContent-Length: 0\r\n\r\n";
             send_response(&stream, &response);
         }
     }
