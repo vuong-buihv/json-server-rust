@@ -1,9 +1,31 @@
 {
-  "posts": [
+  "posts":[
     {
-      "id": 1,
-      "content": "Lorem ipsum",
-      "author": "John Doe"
+      "id":1,
+      "content":"Lorem ipsum",
+      "author":"John Doe"
+    },
+    {
+      "id":2,
+      "content":"Dolor sit amet",
+      "author":"Jane Doe"
+    }
+  ],
+  "comments":[
+    {
+      "id":1,
+      "body":"Consectetur adipiscing elit",
+      "postId":1
+    },
+    {
+      "id":2,
+      "body":"Sed do eiusmod",
+      "postId":2
+    },
+    {
+      "id":3,
+      "body":"Tempor incididunt ut",
+      "postId":2
     }
   ]
 }
