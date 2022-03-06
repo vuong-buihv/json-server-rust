@@ -5,15 +5,18 @@ use std::net::TcpListener;
 use std::net::TcpStream;
 use std::process;
 use std::str::from_utf8;
+use std::sync::Arc;
 
 use clap::Parser;
 use serde_json::Value;
 
 use args::Args;
 use request_methods::RequestMethods;
+use thread_pool::ThreadPool;
 
 mod request_methods;
 mod args;
+mod thread_pool;
 
 const DEFAULT_HOST: &str = "127.0.0.1";
 const DEFAULT_PORT: &str = "8080";
@@ -39,6 +42,7 @@ fn main() {
             process::exit(0);
         }
     };
+    let json_value = Arc::new(json_value);
 
     let listener = match TcpListener::bind(format!("{}:{}", DEFAULT_HOST, port)) {
         Ok(listener) => {
@@ -51,16 +55,21 @@ fn main() {
         }
     };
 
+    let pool = ThreadPool::new(4);
+
     for stream_result in listener.incoming() {
         let stream = match stream_result {
             Ok(tcp_stream) => tcp_stream,
             Err(_) => continue,
         };
-        handle_connection(stream, &json_value).unwrap_or_default();
+        let arc_json_value = Arc::clone(&json_value);
+        pool.execute(move || {
+            handle_connection(stream, arc_json_value).unwrap_or_default();
+        });
     }
 }
 
-fn handle_connection(mut stream: TcpStream, json_value: &Value) -> io::Result<()> {
+fn handle_connection(mut stream: TcpStream, json_value: Arc<Value>) -> io::Result<()> {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer)?;
 
